@@ -53,8 +53,6 @@ class HBNBCommand(cmd.Cmd):
                     aux = Dict.copy()[k].replace('_', ' ')
                     aux = aux.replace('"','\"')
                     Dict[k] = aux
-
-            print(Dict)
             obj = eval("{}".format(class_type))(**Dict)
             obj.save()
             print("{}".format(obj.id))
