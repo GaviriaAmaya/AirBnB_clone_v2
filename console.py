@@ -46,12 +46,13 @@ class HBNBCommand(cmd.Cmd):
             if class_type not in self.all_classes:
                 raise NameError()
             my_list.remove(my_list[0])
-            Dict = dict((x.strip(), y.strip('')) for x, y in (element.split('=') for element in my_list))
+            Dict = dict((x.strip(), y.strip('')) for x, y in
+                        (element.split('=') for element in my_list))
             for k in Dict.copy().keys():
                 if Dict[k][0] == '"':
-                    Dict[k]  = Dict[k][1:-1]
+                    Dict[k] = Dict[k][1:-1]
                     aux = Dict.copy()[k].replace('_', ' ')
-                    aux = aux.replace('"','\"')
+                    aux = aux.replace('"', '\"')
                     Dict[k] = aux
             obj = eval("{}".format(class_type))(**Dict)
             obj.save()
