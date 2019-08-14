@@ -3,12 +3,21 @@
 import uuid
 import models
 from datetime import datetime
+from sqlalchemy import Column, Integer, String, DateTime
+
+Base = declarative_base()
 
 
 class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
+
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow,
+                        nullable=False)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow,
+                        nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
@@ -33,7 +42,6 @@ class BaseModel:
         if not hasattr(self, "id"):
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            models.storage.new(self)
 
     def __str__(self):
         """returns a string
@@ -52,6 +60,7 @@ class BaseModel:
         """updates the public instance attribute updated_at to current
         """
         self.updated_at = datetime.now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
@@ -63,4 +72,10 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
+        if (hasattr(my_dict, "_sa_instance_state")):
+            del my_dict["_sa_instance_state"]
         return my_dict
+
+    def delete(self):
+        """ delete element from database """
+        models.storage.delete(self)
