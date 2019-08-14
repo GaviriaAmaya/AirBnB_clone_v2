@@ -64,6 +64,8 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """delete object from __objects """
+
         if obj and hasattr(obj, "id"):
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             del self.__objects[key]
