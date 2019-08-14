@@ -51,36 +51,22 @@ class DBStorage:
         Args:
             obj: given object
         """
-        if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.__objects[key] = obj
+        self.__session.add(obj)
 
     def save(self):
         """serialize the file path to JSON file path
         """
-        my_dict = {}
-        for key, value in self.__objects.items():
-            my_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding="UTF-8") as f:
-            json.dump(my_dict, f)
+        self.__session.commit()
 
     def reload(self):
         """ create session
         """
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
                                                      expire_on_commit=False))()
-        try:
-            with open(self.__file_path, 'r', encoding="UTF-8") as f:
-                for key, value in (json.load(f)).items():
-                    value = eval(value["__class__"])(**value)
-                    self.__objects[key] = value
-        except FileNotFoundError:
-            pass
 
     def delete(self, obj=None):
         """delete object from __objects """
 
-        if obj and hasattr(obj, "id"):
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            del self.__objects[key]
-            self.save()
+        if obj:
+            obj.delete(synchronize_session=False)
+            self.__session.commit()
