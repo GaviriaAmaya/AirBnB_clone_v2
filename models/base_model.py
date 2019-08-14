@@ -37,7 +37,7 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key != "__class__":
+                elif key != "__class__":
                     if value.isdigit():
                         value = int(value)
                     elif value.replace('.', '').isdigit():
@@ -74,7 +74,7 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-        if (hasattr(my_dict, "_sa_instance_state")):
+        if "_sa_instance_state" in my_dict.keys():
             del my_dict["_sa_instance_state"]
         return my_dict
 
