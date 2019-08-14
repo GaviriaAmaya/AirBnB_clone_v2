@@ -41,6 +41,7 @@ class BaseModel:
                     setattr(self, key, value)
         if not hasattr(self, "id"):
             pass
+
     def __str__(self):
         """returns a string
         Return:
