@@ -17,7 +17,7 @@ class State(BaseModel, Base):
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         cities = relationship('City', cascade='all, delete', backref="state")
-    elif getenv('HBNB_TYPE_STORAGE') == 'file':
+    else:
         @property
         def cities(self):
             """ return all cities belonged to self"""

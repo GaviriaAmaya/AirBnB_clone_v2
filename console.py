@@ -51,9 +51,14 @@ class HBNBCommand(cmd.Cmd):
             for k in Dict.copy().keys():
                 if Dict[k][0] == '"':
                     Dict[k] = Dict[k][1:-1]
+                    if Dict[k].isdigit():
+                        aux = int(Dict[k])
+                    if Dict[k].replace('.', '').isdigit():
+                        aux = float(Dict[k])
                     aux = Dict.copy()[k].replace('_', ' ')
                     aux = aux.replace('"', '\"')
                     Dict[k] = aux
+
             obj = eval("{}".format(class_type))(**Dict)
             obj.save()
             print("{}".format(obj.id))
