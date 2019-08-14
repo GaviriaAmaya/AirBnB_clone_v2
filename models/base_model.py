@@ -4,6 +4,7 @@ import uuid
 import models
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
@@ -14,9 +15,9 @@ class BaseModel:
     """
 
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow,
+    created_at = Column(DateTime, default=datetime.utcnow,
                         nullable=False)
-    updated_at = Column(DateTime, default=datetime.datetime.utcnow,
+    updated_at = Column(DateTime, default=datetime.utcnow,
                         nullable=False)
 
     def __init__(self, *args, **kwargs):
@@ -30,6 +31,8 @@ class BaseModel:
             updated_at: updated date
         """
 
+        self.id = str(uuid.uuid4())
+        self.created_at = self.updated_at = datetime.now()
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -41,9 +44,7 @@ class BaseModel:
                         value = float(value)
                     setattr(self, key, value)
         if not hasattr(self, "id"):
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
-
+            pass
     def __str__(self):
         """returns a string
         Return:

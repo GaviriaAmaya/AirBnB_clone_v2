@@ -37,14 +37,17 @@ class DBStorage:
         Return:
             returns a dictionary of __object
         """
+        aux = {}
         if cls is None:
-            return self.__objects
+            for cls_aux in [User, State, City, Amenity, Place, Review]:
+                for obj in self.__session.query(cls_aux).all():
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    aux[key] = obj
         else:
-            aux = {}
-            for key, value in self.__objects.items():
-                if isinstance(value, cls):
-                    aux[key] = value
-            return aux
+            for obj in self.__session.query(cls).all():
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                aux[key] = obj
+        return aux
 
     def new(self, obj):
         """sets __object to given obj
@@ -61,6 +64,7 @@ class DBStorage:
     def reload(self):
         """ create session
         """
+        Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
                                                      expire_on_commit=False))()
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This is the state class"""
 from os import getenv
-from Base, models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 import models
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
