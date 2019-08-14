@@ -38,10 +38,6 @@ class BaseModel:
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 elif key != "__class__":
-                    if value.isdigit():
-                        value = int(value)
-                    elif value.replace('.', '').isdigit():
-                        value = float(value)
                     setattr(self, key, value)
         if not hasattr(self, "id"):
             pass
