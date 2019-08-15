@@ -23,8 +23,9 @@ class State(BaseModel, Base):
             """ return all cities belonged to self"""
 
             aux = []
-            for key, value in models.storage.all.items():
-                if hasattr(value, "state_id"):
-                    if (value["state_id"] == self.id):
-                        aux.append(value)
+            for key, value in models.storage.all().items():
+                if (type(value).__name__ == 'City'):
+                    if (hasattr(value, "state_id")):
+                        if (value.state_id == self.id):
+                            aux.append(value)
             return aux

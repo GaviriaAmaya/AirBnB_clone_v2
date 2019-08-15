@@ -7,6 +7,15 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'), primary_key=True,
+                             nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True,
+                             nullable=False))
+
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -22,14 +31,6 @@ class Place(BaseModel, Base):
         longitude: longitude in float
         amenity_ids: list of Amenity ids
     """
-    place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60),
-                                 ForeignKey('places.id'), primary_key=True,
-                                 nullable=False),
-                          Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id'), primary_key=True,
-                                 mullable=False)
-    )
 
     __tablename__ = 'places'
 
@@ -52,9 +53,25 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-                """Review relationship with Places on File"""
-                list_of_reviews = []
-                for key, val in models.storage.items():
-                    if key == "Review" and val.place_id == self.id:
+            """Review relationship with Places on File"""
+            list_of_reviews = []
+            for key, val in models.storage.items():
+                if type(val).__name__ == "Review":
+                    if val.place_id == self.id:
                         list_of_reviews.append(val)
-                return (list_of_reviews)
+            return (list_of_reviews)
+
+        @property
+        def amenities(self):
+            """ Return list of amenities """
+            aux = []
+            for id in self.amenity_ids:
+                key = 'Amenity.{}'.format(id)
+                if key in models.storage.all().keys():
+                    aux.append(models.storage.all()[key])
+            return aux
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            if obj and type(obj).__name__ == 'Amenity':
+                self.amenity_ids.append(obj.id)
