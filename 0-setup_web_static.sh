@@ -5,12 +5,11 @@ then
     sudo apt-get update
     sudo apt-get install nginx -y
 fi
-sudo apt-get -y update
-sudo apt-get -y install nginx
+
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared
 sudo echo "Hello, Test!" | sudo tee /data/web_static/releases/test/index.html
-sudo ln -sf /data/web_static/current /data/web_static/releases/test/
+sudo ln -snf /data/web_static/current /data/web_static/releases/test/
 sudo chown -R ubuntu:ubuntu /data/
 sed -i '72i\\tlocation /hbnb_static/ {\n\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
 service nginx restart
