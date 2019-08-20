@@ -9,5 +9,5 @@ def do_pack():
     local("sudo mkdir -p versions")
     dated = datetime.now().strftime("%Y%m%d%H%M%S")
     tar_f = ("versions/web_static_{}.tgz").format(dated)
-    local("sudo tar -cvzf {} web_static".format(file))
+    local("sudo tar -cvzf {} web_static".format(tar_f))
     return tar_f
