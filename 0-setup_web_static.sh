@@ -10,5 +10,5 @@ sudo mkdir -p /data/web_static/shared
 sudo echo "HelloTest!" | sudo tee /data/web_static/releases/test/index.html
 sudo ln -sf /data/web_static/current /data/web_static/releases/test/
 sudo chown -R ubuntu:ubuntu /data/
-sed -i '72i\\tlocation /hbnb_static/ {\n\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
+sudo sed -i '72i\\tlocation /hbnb_static/ {\n\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-enabled/default
 sudo service nginx restart
