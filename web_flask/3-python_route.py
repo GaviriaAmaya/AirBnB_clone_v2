@@ -20,7 +20,8 @@ def c(text):
     return 'C ' + text.replace("_", " ")
 
 
-@app.route('/python/(<text>)')
+@app.route('/python/')
+@app.route('/python/<text>')
 def python(text='is_cool'):
     return 'Python ' + text.replace("_", " ")
 
