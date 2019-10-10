@@ -25,10 +25,13 @@ def c(text):
 def python(text='is_cool'):
     return 'Python ' + text.replace("_", " ")
 
+
 @app.route('/number/<n>', strict_slashes=False)
 def number(n):
     if (n.isdigit() is True):
         return n + " is a number"
+    else:
+        return "404"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
