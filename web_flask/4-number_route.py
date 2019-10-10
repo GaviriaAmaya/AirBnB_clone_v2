@@ -31,7 +31,8 @@ def number(n):
     if (n.isdigit() is True):
         return n + " is a number"
     else:
-        return "404"
+        n = 404
+        return n
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
